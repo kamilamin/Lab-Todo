@@ -8,10 +8,12 @@ class App extends Component {
     super(props);
     this.addTodo = this.addTodo.bind(this)
   }
-  ComponentWillMount(){
+  componentWillMount(){
     let refRoot = firebase.database().ref('/todo/')
     refRoot.on('child_added', (snap)=>{
-      console.log(snap.val())
+      //console.log(snap.val())
+      let currrentTodo = this.state.todos.push(snap.val())
+      this.setState({todo: currrentTodo})
     })
   }
   addTodo(ev){
@@ -19,8 +21,9 @@ class App extends Component {
     let refRoot = firebase.database().ref('/todo/')
     refRoot.push({todo: this.refs.todo.value})
   }
-  
+
   render() {
+    console.log(this.state.todo)
     return (
       <div className="App">
         <div className="App-header">
