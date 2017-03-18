@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import firebase from 'firebase';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.addTodo = this.addTodo.bind(this)
   }
+  ComponentWillMount(){
+    let refRoot = firebase.database().ref('/todo/')
+    refRoot.on('child_added', (snap)=>{
+      console.log(snap.val())
+    })
+  }
   addTodo(ev){
     ev.preventDefault()
-    console.log(this.refs.todo.value)
-    
+    let refRoot = firebase.database().ref('/todo/')
+    refRoot.push({todo: this.refs.todo.value})
   }
+  
   render() {
     return (
       <div className="App">
